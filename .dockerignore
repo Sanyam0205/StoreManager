@@ -1,0 +1,12 @@
+# root .dockerignore
+node_modules
+npm-debug.log
+.DS_Store
+.env
+.git
+.vscode
+.idea
+dist
+build
+client/node_modules
+services/*/node_modules

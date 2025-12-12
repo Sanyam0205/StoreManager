@@ -1,0 +1,21 @@
+curl.exe -X POST http://localhost:3002/products `
+  -H "Content-Type: application/json" `
+  -d "{\"name\":\"Demo Tee\",\"description\":\"Basic cotton T-shirt\",\"price_cents\":1999,\"currency\":\"USD\",\"image_url\":\"https://picsum.photos/seed/tee/400/300\"}"
+curl.exe -X POST http://localhost:3002/products `
+  -H "Content-Type: application/json" `
+  -d "{\"name\":\"Hoodie\",\"description\":\"Warm fleece hoodie\",\"price_cents\":4999,\"currency\":\"USD\",\"image_url\":\"https://picsum.photos/seed/hoodie/400/300\"}"
+curl.exe -X POST http://localhost:3002/products `
+  -H "Content-Type: application/json" `
+  -d "{\"name\":\"Coffee Mug\",\"description\":\"Ceramic mug\",\"price_cents\":1299,\"currency\":\"USD\",\"image_url\":\"https://picsum.photos/seed/mug/400/300\"}"
+
+
+Inventory
+curl.exe -X POST http://localhost:3004/inventory `
+  -H "Content-Type: application/json" `
+  -d "{\"productId\":\"<PRODUCT_ID>\", \"qty\":20}"
+curl.exe -X POST http://localhost:3004/inventory `
+  -H "Content-Type: application/json" `
+  -d "{\"productId\":\"<PRODUCT_ID>\", \"qty\":10}"
+curl.exe -X POST http://localhost:3004/inventory `
+  -H "Content-Type: application/json" `
+  -d "{\"productId\":\"<PRODUCT_ID>\", \"qty\":50}"

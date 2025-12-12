@@ -1,0 +1,73 @@
+services:
+  mongo:
+    image: mongo:6.0
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  user:
+    build: ./services/user
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - MONGO_URI=mongodb://mongo:27017/mini_ecom_user
+    depends_on:
+      - mongo
+
+  product:
+    build: ./services/product
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+      - MONGO_URI=mongodb://mongo:27017/mini_ecom_product
+    depends_on:
+      - mongo
+
+  inventory:
+    build: ./services/inventory
+    ports:
+      - "3004:3004"
+    environment:
+      - PORT=3004
+      - MONGO_URI=mongodb://mongo:27017/mini_ecom_inventory
+    depends_on:
+      - mongo
+
+  order:
+    build: ./services/order
+    ports:
+      - "3003:3003"
+    environment:
+      - PORT=3003
+      - MONGO_URI=mongodb://mongo:27017/mini_ecom_order
+      - INVENTORY_URL=http://inventory:3004
+      - PRODUCT_BASE=http://product:3002
+    depends_on:
+      - mongo
+      - inventory
+      - product
+
+  client:
+    build: ./client
+    ports:
+      - "3000:80"
+    environment:
+      - REACT_APP_PRODUCT_BASE=http://product:3002
+      - REACT_APP_ORDER_BASE=http://order:3003
+      - REACT_APP_INVENTORY_BASE=http://inventory:3004
+    depends_on:
+      - product
+      - order
+      - inventory
+
+volumes:
+  mongo-data:
